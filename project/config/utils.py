@@ -1,0 +1,30 @@
+TOURNAMENT_IDENTIFIERS = {
+    "ANGT_2025_ABU_DHABI": "JTF424",
+    "ANGT_2025_BELGRADE": "JTB24",
+    "ANGT_2025_ULM": "JTU24",
+    "ANGT_2025_MUNICH": "JTM24",
+    "ANGT_2025_ISTANBUL": "JTI24",
+}
+
+ACTION_CODES = {
+    "Missed Three Pointer": "3PA",
+    "Three Pointer": "3PM",
+    "Missed Two Pointer": "2PA",
+    "Two Pointer": "2PM",
+    "Missed Free Throw": "FTA",
+    "Free Throw": "FTM",
+    "Foul Drawn": "PFRec",
+    "Foul": "PF",
+    "Turnover": "TOV",
+    "Assist": "AST",
+    "Off Rebound": "OREB",
+    "Def Rebound": "DREB",
+    "Rebound": "REB",
+    "Shot Rejected": "BLKRec",
+    "Block": "BLK",
+    "Steal": "STL",
+    "TV Time Out": "TO",
+    "Time Out": "TO",
+    "In": "IN",
+    "Out": "OUT",
+}
