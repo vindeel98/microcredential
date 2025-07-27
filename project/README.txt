@@ -8,3 +8,7 @@ python main.py
 
 python -m venv venv
 pip install -r requirements.txt
+
+
+
+Remove-Item -Recurse -Force venv

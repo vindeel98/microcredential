@@ -2,3 +2,7 @@ selenium
 beautifulsoup4
 requests
 pandas
+matplotlib
+seaborn
+jinja2
+scikit-learn

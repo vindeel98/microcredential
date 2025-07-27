@@ -1,7 +1,8 @@
 import pandas as pd
 import csv
+import os
 
-def save_csv_total_box_score(box_scores):
+def save_csv_players_total_box_score(box_scores):
     if not box_scores:
         print("⚠️ No hay datos para guardar.")
         return
@@ -28,7 +29,6 @@ def save_csv_total_box_score(box_scores):
         ftm, fta = split_m_a(stats[7])
 
         row = [
-            stats[0],             # #
             item["player_name"],  # Player
             stats[1],             # GP
             stats[2],             # GS
@@ -57,7 +57,6 @@ def save_csv_total_box_score(box_scores):
 
     columns = [
         "team_name",
-        "#",
         "Player",
         "GP",
         "GS",
@@ -83,8 +82,95 @@ def save_csv_total_box_score(box_scores):
     ]
 
     df = pd.DataFrame(rows, columns=columns)
-    df.to_csv("./files/total_box_score.csv", index=False, encoding="utf-8-sig")
+    df.to_csv("./files/players_total_box_score.csv", index=False, encoding="utf-8-sig")
     print("✅ Archivo guardado: total_box_score.csv")
+
+def save_csv_team_total_box_score(box_scores):
+    if not box_scores:
+        print("⚠️ No hay datos para guardar.")
+        return
+
+    rows = []
+    for item in box_scores:
+        if item["player_name"] == "UNKNOWN":
+            continue
+
+        stats = item["stats"]
+
+        # Asumimos que stats está en este orden:
+        # ['#', 'GP', 'GS', 'Min', 'PTS', '2PM/A', '3PM/A', 'FTM/A', 'OR', 'DR', 'TR', 'AST', 'STL', 'TO', 'BLK', 'BLKA', 'FC', 'FD', 'PIR']
+
+        # Extraemos y separamos los valores con "/"
+        def split_m_a(value):
+            if '/' in value:
+                made, att = value.split('/')
+                return made.strip(), att.strip()
+            return value, ''
+
+        two_pm, two_pa = split_m_a(stats[5])
+        three_pm, three_pa = split_m_a(stats[6])
+        ftm, fta = split_m_a(stats[7])
+
+        row = [
+            stats[1],             # GP
+            stats[3],             # Min
+            stats[4],             # PTS
+            two_pm,               # 2PM
+            two_pa,               # 2PA
+            three_pm,             # 3PM
+            three_pa,             # 3PA
+            ftm,                  # FTM
+            fta,                  # FTA
+            stats[8],             # OR
+            stats[9],             # DR
+            stats[10],            # TR
+            stats[11],            # AST
+            stats[12],            # STL
+            stats[13],            # TO
+            stats[14],            # BLK
+            stats[15],            # BLKA
+            stats[16],            # FC
+            stats[17],            # FD
+            stats[18],            # PIR
+        ]
+
+        rows.append([item["team_name"]] + row)
+
+    columns = [
+        "team_name",
+        "GP",
+        "Min",
+        "PTS",
+        "2PM",
+        "2PA",
+        "3PM",
+        "3PA",
+        "FTM",
+        "FTA",
+        "OR",
+        "DR",
+        "TR",
+        "AST",
+        "STL",
+        "TO",
+        "BLK",
+        "BLKA",
+        "FC",
+        "FD",
+        "PIR",
+    ]
+
+    df = pd.DataFrame(rows, columns=columns)
+    df.to_csv("./files/team_total_box_score.csv", index=False, encoding="utf-8-sig")
+    print("✅ Archivo guardado: total_box_score.csv")
+
+def save_csv_team_defensive_box_score(df_defensive_stats: pd.DataFrame):
+    
+    filename = "team_total_box_scores_defensive.csv"
+    base_dir = os.path.dirname(__file__)
+    out_path = os.path.join(base_dir, "files", filename)
+    df_defensive_stats.to_csv(out_path, index=False)
+
 
 def save_csv_play_by_plays_raw(game_name, game_plays):
     if not game_plays:

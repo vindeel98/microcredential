@@ -124,7 +124,8 @@ def scrap_box_scores(teams_urls):
     # options.add_argument("--headless")
     driver = webdriver.Chrome(service=service, options=options)
 
-    all_stats = []
+    players_all_stats = []
+    team_all_stats = []
 
     for team in teams_urls:
         team_name, team_url = team
@@ -142,6 +143,27 @@ def scrap_box_scores(teams_urls):
             rows = driver.find_elements(By.CSS_SELECTOR, "div.complex-stat-table_row__XPRhI[role='row']")
 
             for row in rows:
+
+                # PARA EQUIPOS
+
+                total_cell = row.find_elements(By.CSS_SELECTOR, "p.complex-stat-table_totalValue__l6Q4d")
+                if total_cell and total_cell[0].text.strip().lower() == "totals":
+                    # Extraer las stats de la misma forma
+                    cells = row.find_elements(By.CSS_SELECTOR, "p.complex-stat-table_cell__XIEO5")
+                    stats = [cell.text.strip() for cell in cells]
+
+                    team_stats = {
+                        "team_name": team_name,
+                        "player_name": "TOTALS",
+                        "stats": stats
+                    }
+
+                    print(team_stats)
+                    team_all_stats.append(team_stats)
+                    continue  # ✅ Saltamos el resto del procesamiento normal
+
+                # PARA JUGADORES
+
                 cells = row.find_elements(By.CSS_SELECTOR, "p.complex-stat-table_cell__XIEO5")
                 if not cells or all(cell.text.strip() == "" for cell in cells):
                     continue
@@ -149,6 +171,7 @@ def scrap_box_scores(teams_urls):
                 try:
                     name_container = row.find_element(By.CSS_SELECTOR, "div[role='cell'][title]")
                     player_name = name_container.get_attribute("title").strip()
+                
                 except:
                     player_name = "UNKNOWN"
 
@@ -164,13 +187,13 @@ def scrap_box_scores(teams_urls):
                 }
 
                 print(player_stats)
-                all_stats.append(player_stats)
+                players_all_stats.append(player_stats)
 
         except Exception as e:
             print(f"⚠️ Error en {stats_url}: {e}")
 
     driver.quit()
-    return all_stats
+    return players_all_stats, team_all_stats
 
 def scrap_play_by_plays(game_url):
     service = Service("./config/chromedriver.exe")
