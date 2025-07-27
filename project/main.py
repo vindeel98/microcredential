@@ -29,7 +29,6 @@ def main():
     
 
     ## BOX SCORE AGAINST ME
-
     
     team_box_scores_defensive = team_stats.get_team_defensive_stats_from_play_by_plays(
         play_by_play_folder="files/play_by_plays",
