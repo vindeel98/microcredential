@@ -10,33 +10,33 @@ def main():
 
     ## BOX SCORE SRAPING
 
-    #teams_urls = scrap.scrap_urls_teams(tournament)
-    #players_box_scores, team_box_scores = scrap.scrap_box_scores(teams_urls)
-    #export.save_csv_players_total_box_score(players_box_scores)
-    #export.save_csv_team_total_box_score(team_box_scores)
+    teams_urls = scrap.scrap_urls_teams(tournament)
+    players_box_scores, team_box_scores = scrap.scrap_box_scores(teams_urls)
+    export.save_csv_players_total_box_score(players_box_scores)
+    export.save_csv_team_total_box_score(team_box_scores)
 
     ## PLAY BY PLAY SCRAPING
     
-    #games_urls = scrap.scrap_urls_games(tournament)
-    #for game_name, game_url in games_urls:
-    #    play_by_plays = scrap.scrap_play_by_plays(game_url=game_url)
-    #    export.save_csv_play_by_plays_raw(game_name= game_name, game_plays=play_by_plays)
+    games_urls = scrap.scrap_urls_games(tournament)
+    for game_name, game_url in games_urls:
+        play_by_plays = scrap.scrap_play_by_plays(game_url=game_url)
+        export.save_csv_play_by_plays_raw(game_name= game_name, game_plays=play_by_plays)
         
-    #    print("----")
+        print("----")
 
-    #    cleaned_play_by_plays = scrap.clean_play_by_plays(play_by_plays)
-    #    export.save_csv_play_by_plays_clean(game_name=game_name,game_plays=cleaned_play_by_plays)
+        cleaned_play_by_plays = scrap.clean_play_by_plays(play_by_plays)
+        export.save_csv_play_by_plays_clean(game_name=game_name,game_plays=cleaned_play_by_plays)
     
 
     ## BOX SCORE AGAINST ME
 
-    '''
+    
     team_box_scores_defensive = team_stats.get_team_defensive_stats_from_play_by_plays(
         play_by_play_folder="files/play_by_plays",
         team_list_csv="files/team_total_box_score.csv"
     )
     export.save_csv_team_defensive_box_score(team_box_scores_defensive)
-    '''
+    
 
     # REPORT GENERATING
 
